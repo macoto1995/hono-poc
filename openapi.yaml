@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: My API
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: John Doe
+        age:
+          type: number
+          example: 42
+      required:
+        - id
+        - name
+        - age
+  parameters: {}
+paths:
+  /users/{id}:
+    get:
+      parameters:
+        - schema:
+            type: string
+            minLength: 3
+            example: '1212121'
+          required: true
+          name: id
+          in: path
+      responses:
+        '200':
+          description: Retrieve the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /dogs:
+    get:
+      '400':
+        content:
+          application/json:
+            schema:
+              _def:
+                unknownKeys: strip
+                catchall:
+                  _def:
+                    typeName: ZodNever
+                typeName: ZodObject
+              _cached: null
+        description: Returns an error
+      parameters:
+        - schema:
+            type: string
+          required: false
+          name: name
+          in: path
+        - schema:
+            type: string
+          required: false
+          name: breed
+          in: path
+      responses:
+        '200':
+          description: get dogs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    breed:
+                      type: string
+                    birthDate:
+                      type: string
+                    createdAt:
+                      type: string
+                  required:
+                    - name
+                    - breed
+                    - birthDate
+                    - createdAt
